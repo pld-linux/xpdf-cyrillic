@@ -6,7 +6,7 @@ Release:	3
 License:	GPL
 Group:		X11/Applications
 Source0:	ftp://ftp.foolabs.com/pub/xpdf/%{name}.tar.gz
-# Source0-md5:	e51728bad11e4a9750abc8d87daec560
+# Source0-md5:	7b22f31289ce0812d2ec77014e7b0cdf
 URL:		http://www.foolabs.com/xpdf/
 Requires(post,preun):	grep
 Requires(post,preun):	xpdf
@@ -37,6 +37,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_datadir}/xpdf
 
 install *.unicodeMap $RPM_BUILD_ROOT%{_datadir}/xpdf
+install *.nameToUnicode $RPM_BUILD_ROOT%{_datadir}/xpdf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -45,9 +46,13 @@ rm -rf $RPM_BUILD_ROOT
 umask 022
 if [ ! -f /etc/xpdfrc ]; then
 	echo 'unicodeMap	KOI8-R	/usr/share/xpdf/KOI8-R.unicodeMap' >> /etc/xpdfrc
+	echo 'nameToUnicode		/usr/share/xpdf/Bulgarian.nameToUnicode' >> /etc/xpdfrc
 else
  if ! grep -q 'KOI8-R\.unicodeMap' /etc/xpdfrc; then
 	echo 'unicodeMap	KOI8-R	/usr/share/xpdf/KOI8-R.unicodeMap' >> /etc/xpdfrc
+ fi
+ if ! grep -q 'Bulgarian\.nameToUnicode' /etc/xpdfrc; then
+	echo 'nameToUnicode		/usr/share/xpdf/Bulgarian.nameToUnicode' >> /etc/xpdfrc
  fi
 fi
 
@@ -55,7 +60,8 @@ fi
 if [ "$1" = "0" ]; then
 	umask 022
 	grep -v 'KOI8-R\.unicodeMap' /etc/xpdfrc > /etc/xpdfrc.new
-	mv -f /etc/xpdfrc.new /etc/xpdfrc
+	grep -v 'Bulgarian\.nameToUnicode' /etc/xpdfrc.new > /etc/xpdfrc
+	rm -f /etc/xpdfrc.new
 fi
 
 %files
