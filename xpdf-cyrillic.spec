@@ -7,8 +7,10 @@ License:	GPL
 Group:		X11/Applications
 Source0:	ftp://ftp.foolabs.com/pub/xpdf/%{name}.tar.gz
 URL:		http://www.foolabs.com/xpdf/
-Requires:	xpdf
 Requires(post,preun):	grep
+Requires(post,preun):	xpdf
+Requires(preun):	fileutils
+Requires:	xpdf
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -38,16 +40,18 @@ install *.unicodeMap $RPM_BUILD_ROOT%{_datadir}/xpdf
 rm -rf $RPM_BUILD_ROOT
 
 %post
+umask 022
 if [ ! -f /etc/xpdfrc ]; then
 	echo 'unicodeMap	KOI8-R	/usr/share/xpdf/KOI8-R.unicodeMap' >> /etc/xpdfrc
 else
- if ! grep -q KOI8-R.unicodeMap /etc/xpdfrc; then
+ if ! grep -q 'KOI8-R\.unicodeMap' /etc/xpdfrc; then
 	echo 'unicodeMap	KOI8-R	/usr/share/xpdf/KOI8-R.unicodeMap' >> /etc/xpdfrc
  fi
 fi
 
 %preun
-grep -v KOI8-R.unicodeMap /etc/xpdfrc > /etc/xpdfrc.new
+umask 022
+grep -v 'KOI8-R\.unicodeMap' /etc/xpdfrc > /etc/xpdfrc.new
 mv -f /etc/xpdfrc.new /etc/xpdfrc
 
 %files
