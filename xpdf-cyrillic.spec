@@ -11,7 +11,6 @@ Requires:	xpdf
 Requires(post,preun):	grep
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-
 %description
 The Xpdf language support packages include CMap files, text encodings,
 and various other configuration information necessary or useful for
@@ -40,15 +39,15 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 if [ ! -f /etc/xpdfrc ]; then
-	echo 'unicodeMap	KOI8-R	/usr/X11R6/share/xpdf/KOI8-R.unicodeMap' >> /etc/xpdfrc
+	echo 'unicodeMap	KOI8-R	/usr/share/xpdf/KOI8-R.unicodeMap' >> /etc/xpdfrc
 else
- if ! grep -q /usr/X11R6/share/xpdf/KOI8-R.unicodeMap /etc/xpdfrc; then
-	echo 'unicodeMap	KOI8-R	/usr/X11R6/share/xpdf/KOI8-R.unicodeMap' >> /etc/xpdfrc
+ if ! grep -q KOI8-R.unicodeMap /etc/xpdfrc; then
+	echo 'unicodeMap	KOI8-R	/usr/share/xpdf/KOI8-R.unicodeMap' >> /etc/xpdfrc
  fi
 fi
 
 %preun
-grep -v /usr/X11R6/share/xpdf/KOI8-R.unicodeMap /etc/xpdfrc > /etc/xpdfrc.new
+grep -v KOI8-R.unicodeMap /etc/xpdfrc > /etc/xpdfrc.new
 mv -f /etc/xpdfrc.new /etc/xpdfrc
 
 %files
