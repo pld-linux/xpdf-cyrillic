@@ -2,7 +2,7 @@ Summary:	KOI8-R encoding support for xpdf
 Summary(pl.UTF-8):	Wsparcie kodowania KOI8-R dla xpdf
 Name:		xpdf-cyrillic
 Version:	1.0
-Release:	3
+Release:	4
 License:	GPL
 Group:		X11/Applications
 Source0:	ftp://ftp.foolabs.com/pub/xpdf/%{name}.tar.gz
